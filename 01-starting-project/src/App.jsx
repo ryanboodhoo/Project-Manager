@@ -5,22 +5,39 @@ import NoProjectSelected from "./components/NoProjectSelected.jsx";
 
 function App() {
   const [projectsState, setProjectState] = useState({
-    selectedProjectedId: undefined,
-    projects: null,
+    selectedProjectId: undefined,  // Fixed typo here
+    projects: [],
   });
 
   function handleStartAddProject() {
     setProjectState((prevState) => ({
       ...prevState,
-      selectedProjectedId: null,
+      selectedProjectId: null,  // Fixed typo here
     }));
   }
 
+  function handleAddProject(projectData) {
+    setProjectState((prevState) => {
+      const newProject = {
+        ...projectData,
+        id: Math.random(),
+      };
+
+      return {
+        ...prevState,
+        projects: [...prevState.projects, newProject],
+        selectedProjectId: newProject.id, // Auto-select new project after adding
+      };
+    });
+  }
+
+  console.log(projectsState);
+
   let content;
 
-  if (projectsState.selectedProjectedId === null) {
-    content = <NewProject />;
-  } else if (projectsState.selectedProjectedId === undefined) {
+  if (projectsState.selectedProjectId === null) {  // Fixed typo here
+    content = <NewProject onAdd={handleAddProject} />;
+  } else if (projectsState.selectedProjectId === undefined) {  // Fixed typo here
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
 
